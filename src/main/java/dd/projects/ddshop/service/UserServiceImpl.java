@@ -3,18 +3,16 @@ package dd.projects.ddshop.service;
 import dd.projects.ddshop.dto.UserDTO;
 import dd.projects.ddshop.entity.User;
 import dd.projects.ddshop.repository.UserRepository;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
+@Data
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
     public List<UserDTO> getAllUsers(){
         List<User> users= userRepository.findAll();
         return users.stream().map(it->fromUserToUserDTO(it)).collect(Collectors.toList());
