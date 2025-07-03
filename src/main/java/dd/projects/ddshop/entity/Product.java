@@ -1,9 +1,16 @@
 package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.Set;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "product")
 public class Product {
@@ -20,76 +27,12 @@ public class Product {
     private int availabilityQuantity;
     @Column(name = "addedDate", nullable = true)
     private Date addedDate;
-    @Column(name = "categoryId", nullable = false)
-    private int categoryId;
 
-    protected Product() {}
-
-    public Product(int id, String name, String description, int price, int availabilityQuantity, Date addedDate, int categoryId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.availabilityQuantity = availabilityQuantity;
-        this.addedDate = addedDate;
-        this.categoryId = categoryId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setAvailableQuantity(int availabilityQuantity) {
-        this.availabilityQuantity = availabilityQuantity;
-    }
-
-    public void setAddedDate(Date addedDate) {
-        this.addedDate = addedDate;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public int getAvailableQuantity() {
-        return availabilityQuantity;
-    }
-
-    public Date getAddedDate() {
-        return addedDate;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId", nullable = false)
+    private Category categoryId;
+    @ManyToMany(mappedBy = "productSet")
+    private Set<ProductAttribute> productAttributeSet;
+    @OneToOne(mappedBy = "productId")
+    private CartEntry cartEntry;
 }

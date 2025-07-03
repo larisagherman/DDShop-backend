@@ -15,8 +15,9 @@ import java.util.List;
 public class CartEntry {
     @Id
     private int id;
-    @Column(name = "product_id",nullable = false)
-    private int productId;
+    @OneToOne
+    @JoinColumn(name = "product_id",nullable = false)
+    private Product productId;
     @Column(name = "quantity",nullable = false)
     private int quantity;
     @Column(name = "price_per_piece",nullable = false)

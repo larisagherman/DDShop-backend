@@ -1,62 +1,30 @@
 package dd.projects.ddshop.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="product_attribute")
+@Table(name = "product_attribute")
 public class ProductAttribute {
     @Id
     private int id;
-    @Column(name = "name",length = 100,nullable = false)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
-    @Column(name = "product_id",nullable = false)
-    private int productId;
+    @ManyToMany
+    @JoinTable(
+            name = "product_product_attribute", // join table name
+            joinColumns = @JoinColumn(name = "product_attribute_id"), // this entity's FK
+            inverseJoinColumns = @JoinColumn(name = "product_id") // FK to Product
+    )
+    private Set<Product> productSet;
     @Column(name = "value")
     private String value;
 
-    public ProductAttribute() {
-
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public ProductAttribute(int id, String name, int productId, String value) {
-        this.id = id;
-        this.name = name;
-        this.productId = productId;
-        this.value = value;
-    }
 }
