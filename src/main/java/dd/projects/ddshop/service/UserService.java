@@ -1,11 +1,12 @@
 package dd.projects.ddshop.service;
 
+import dd.projects.ddshop.dto.UserDTO;
 import dd.projects.ddshop.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    public List<User> getAllUsers();
+    public List<UserDTO> getAllUsers();
 
     public User createUser(User user);
 

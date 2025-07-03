@@ -1,11 +1,13 @@
 package dd.projects.ddshop.service;
 
+import dd.projects.ddshop.dto.UserDTO;
 import dd.projects.ddshop.entity.User;
 import dd.projects.ddshop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -13,8 +15,12 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers(){
+        List<User> users= userRepository.findAll();
+        return users.stream().map(it->fromUserToUserDTO(it)).collect(Collectors.toList());
+    }
+    public UserDTO fromUserToUserDTO(User user){
+        return new UserDTO(user.getFirstName(),user.getLastName(),user.getEmail(),user.getPhoneNumber());
     }
     public User getUserById(int id) {
         return userRepository.findById(id);
@@ -34,10 +40,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(existingUser);
     }
 
+    @Override
     public User updateEmail(int userId, String email) {
-        User existingUser = userRepository.findById(userId);
-        existingUser.setEmail(email);
-        return userRepository.save(existingUser);
+        return null;
     }
 
     public void deleteUser(int id) {
