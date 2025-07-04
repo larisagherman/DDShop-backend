@@ -1,19 +1,20 @@
 package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "address")
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
+    @SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
     private int id;
     @Column(name = "street_line", nullable = false)
     private int streetLine;
@@ -26,15 +27,15 @@ public class Address {
     @Column(nullable = false, length = 50)
     private String country;
 
-    @OneToMany(mappedBy = "defaultDeliveryAddress")
-    private List<User> usersWithThisDeliveryAddress;
-    @OneToMany(mappedBy = "defaultBillingAddress")
-    private List<User> usersWithThisBillingAddress;
+    @OneToOne(mappedBy = "defaultDeliveryAddress")
+    private User defaultDeliveryAddress;
+    @OneToOne(mappedBy = "defaultBillingAddress")
+    private User defaultBillingAddress;
 
-    @OneToMany(mappedBy = "deliveryAddress")
-    private List<Order> ordersWithThisDeliveryAddress;
-    @OneToMany(mappedBy = "invoiceAddress")
-    private List<Order> ordersWithThisInvoiceAddress;
+    @OneToOne(mappedBy = "deliveryAddress")
+    private Order deliveryAddress;
+    @OneToOne(mappedBy = "invoiceAddress")
+    private Order invoiceAddress;
 
 
 

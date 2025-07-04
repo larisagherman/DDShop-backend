@@ -1,6 +1,5 @@
 package dd.projects.ddshop.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO {
-    private int id;
-    private int streetLine;
-    private int postalCode;
+public class AddressDTORequest {
+    private Integer streetLine;
+    private Integer postalCode;
     private String city;
     private String county;
     private String country;

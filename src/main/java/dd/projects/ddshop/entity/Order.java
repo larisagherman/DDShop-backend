@@ -1,12 +1,11 @@
 package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
-@Data//to generate getters and setters
+@Getter
+@Setter
 @Entity
 @Table(name = "order_")
 @AllArgsConstructor
@@ -23,10 +22,10 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type",nullable = false)
     private PaymentType paymentType;
-    @ManyToOne
+    @OneToOne
     @JoinColumn (name = "delivery_address",nullable = false)
     private Address deliveryAddress;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "invoice_address",nullable = false)
     private Address invoiceAddress;
     @Column(name = "total_price",nullable = false)

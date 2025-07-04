@@ -1,14 +1,15 @@
 package dd.projects.ddshop.service;
 
-import dd.projects.ddshop.dto.AddressDTO;
+import dd.projects.ddshop.dto.AddressDTORequest;
+import dd.projects.ddshop.dto.AddressDTOResponse;
 import dd.projects.ddshop.entity.Address;
 
 import java.util.List;
 
 public interface AddressService {
-    public List<AddressDTO> getAddresses();
-//    public AddressDTO getAddressById(Integer id);
-//    public Address createAddress(Address address);
-//    public Address updateAddress(Address address);
-//    public void deleteAddress(Integer id);
+    public AddressDTOResponse createAddress(AddressDTORequest addressDTORequest);
+    public List<AddressDTOResponse> getAddresses();
+    public AddressDTOResponse getAddressById(Integer addressId);
+    public AddressDTOResponse updateAddress(Integer id,AddressDTORequest address);
+    public AddressDTOResponse deleteAddress(Integer id);
 }

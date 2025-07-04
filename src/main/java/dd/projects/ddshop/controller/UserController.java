@@ -1,41 +1,39 @@
 package dd.projects.ddshop.controller;
 
-import dd.projects.ddshop.dto.UserDTO;
-import dd.projects.ddshop.entity.User;
+import dd.projects.ddshop.dto.UserDTORequest;
+import dd.projects.ddshop.dto.UserDTOResponse;
 import dd.projects.ddshop.service.UserServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserServiceImpl userService;
-
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
     @GetMapping
-    public List<UserDTO> getUsers() {
+    public List<UserDTOResponse> getAllUsers() {
         return userService.getAllUsers();
     }
-
-    @PutMapping(value = "/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    @PostMapping
+    public UserDTOResponse createUser(@RequestBody UserDTORequest userDTORequest) {
+        return userService.createUser(userDTORequest);
     }
-    @PutMapping(value = "/{id}/email")
-    public User updateEmail(@PathVariable int id, @RequestBody String email) {
-        return userService.updateEmail(id, email);
+    @PutMapping("/{id}")
+    public UserDTOResponse updateUser(@PathVariable("id") int id, @RequestBody UserDTORequest userDTORequest) {
+        return userService.update(id, userDTORequest);
     }
-
-    @DeleteMapping(value = "/{id}")
-    public void deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDTOResponse> deleteUser(@PathVariable("id") int id) {
+        UserDTOResponse deletedUser=userService.delete(id);
+        return ResponseEntity.ok(deletedUser);
+    }
+    @GetMapping("{id}")
+    public UserDTOResponse getUserById(@PathVariable int id){
+        return userService.getUserById(id);
     }
 
 

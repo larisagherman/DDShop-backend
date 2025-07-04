@@ -1,50 +1,57 @@
 package dd.projects.ddshop.service;
 
-import dd.projects.ddshop.dto.UserDTO;
+import dd.projects.ddshop.dto.UserDTORequest;
+import dd.projects.ddshop.dto.UserDTOResponse;
 import dd.projects.ddshop.entity.User;
+import dd.projects.ddshop.mapper.AddressMapper;
+import dd.projects.ddshop.mapper.UserMapper;
 import dd.projects.ddshop.repository.UserRepository;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-@Data
+
+
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
-    public List<UserDTO> getAllUsers(){
-        List<User> users= userRepository.findAll();
-        return users.stream().map(it->fromUserToUserDTO(it)).collect(Collectors.toList());
-    }
-    public UserDTO fromUserToUserDTO(User user){
-        return new UserDTO(user.getFirstName(),user.getLastName(),user.getEmail(),user.getPhoneNumber());
-    }
-    public User getUserById(int id) {
-        return userRepository.findById(id);
-    }
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-    public User updateUser(int userId,User updatedUser) {
-        User existingUser = userRepository.findById(userId);// first we try and find the user we want to update their data
-        existingUser.setFirstName(updatedUser.getFirstName());
-        existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword(updatedUser.getPassword());
-        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
-        existingUser.setDefaultDeliveryAddress(updatedUser.getDefaultDeliveryAddress());
-        existingUser.setDefaultBillingAddress(updatedUser.getDefaultBillingAddress());
-        return userRepository.save(existingUser);
+    private final UserMapper userMapper;
+    private final AddressMapper addressMapper;
+
+    public UserDTOResponse createUser(UserDTORequest userDTORequest) {
+        User newUser = userMapper.fromUserDTORequestToUser(userDTORequest);
+        User savedUser = userRepository.save(newUser);
+        return userMapper.fromUserToUserDTOResponse(savedUser);
     }
 
-    @Override
-    public User updateEmail(int userId, String email) {
-        return null;
+    public List<UserDTOResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::fromUserToUserDTOResponse).collect(Collectors.toList());
     }
 
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
+    public UserDTOResponse getUserById(Integer id) {
+        User foundUser = userRepository.findById(id).orElse(null);
+        return userMapper.fromUserToUserDTOResponse(foundUser);
     }
+    public UserDTOResponse update(Integer id, UserDTORequest userDTORequest) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        existingUser.setFirstName(userDTORequest.getFirstName());
+        existingUser.setLastName(userDTORequest.getLastName());
+        existingUser.setEmail(userDTORequest.getEmail());
+        existingUser.setPhoneNumber(userDTORequest.getPhoneNumber());
+        existingUser.setPassword(userDTORequest.getPassword());
+        existingUser.setDefaultDeliveryAddress(addressMapper.fromDTORequestToEntity(userDTORequest.getDeliveryAddress()));
+        existingUser.setDefaultBillingAddress(addressMapper.fromDTORequestToEntity(userDTORequest.getBillingAddress()));
 
+        User updatedUser = userRepository.save(existingUser);
+
+        return userMapper.fromUserToUserDTOResponse(updatedUser);
+    }
+    public UserDTOResponse delete(Integer id) {
+        User user = userRepository.findById(id).orElse(null);
+        userRepository.delete(user);
+        return userMapper.fromUserToUserDTOResponse(user);
+    }
 }

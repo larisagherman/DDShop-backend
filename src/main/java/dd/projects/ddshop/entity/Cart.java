@@ -1,14 +1,13 @@
 package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "cart")
 @AllArgsConstructor

@@ -1,19 +1,20 @@
 package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "user_")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     private int id;
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
@@ -25,10 +26,11 @@ public class User {
     private Long phoneNumber;
     @Column(nullable = false)
     private String password;
-    @ManyToOne
+
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name ="default_delivery_address" , nullable = false)
     private Address defaultDeliveryAddress;
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name ="default_billing_address" , nullable = false)
     private Address defaultBillingAddress;
 

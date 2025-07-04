@@ -1,22 +1,37 @@
 package dd.projects.ddshop.controller;
 
-import dd.projects.ddshop.dto.AddressDTO;
+import dd.projects.ddshop.dto.AddressDTORequest;
+import dd.projects.ddshop.dto.AddressDTOResponse;
 import dd.projects.ddshop.entity.Address;
 import dd.projects.ddshop.service.AddressService;
-import lombok.Data;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/address")
-@Data
 public class AddressController {
     private final AddressService addressService;
+    @PostMapping
+    public AddressDTOResponse createAddress(@RequestBody AddressDTORequest addressDTORequest) {
+        return addressService.createAddress(addressDTORequest);
+    }
     @GetMapping
-    public List<AddressDTO> getAddresses() {
+    public List<AddressDTOResponse> getAddresses() {
         return addressService.getAddresses();
+    }
+
+    @GetMapping("{id}")
+    public AddressDTOResponse getAddressById(@PathVariable Integer id) {
+        return addressService.getAddressById(id);
+    }
+    @PostMapping("{id}")
+    public AddressDTOResponse updateAddress(@PathVariable Integer id,@RequestBody AddressDTORequest addressDTORequest) {
+        return addressService.updateAddress(id,addressDTORequest);
+    }
+    @DeleteMapping("{id}")
+    public void deleteAddress(@PathVariable Integer id) {
+        addressService.deleteAddress(id);
     }
 }
