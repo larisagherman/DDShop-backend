@@ -1,5 +1,6 @@
 package dd.projects.ddshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,10 +32,16 @@ public class Product {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category categoryId;
 
-    @ManyToMany(mappedBy = "productSet",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.EAGER,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "product_product_attribute",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_attribute_id")
+    )
     private Set<ProductAttribute> productAttributeSet;
     @OneToOne(mappedBy = "productId")
     private CartEntry cartEntry;
+
     @PreRemove
     private void removeAssociations() {
         for (ProductAttribute attribute : productAttributeSet) {

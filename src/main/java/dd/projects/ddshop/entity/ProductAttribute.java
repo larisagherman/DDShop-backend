@@ -1,5 +1,6 @@
 package dd.projects.ddshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,12 +19,7 @@ public class ProductAttribute {
     private int id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;
-    @ManyToMany
-    @JoinTable(
-            name = "product_product_attribute", // join table name
-            joinColumns = @JoinColumn(name = "product_attribute_id"), // this entity's FK
-            inverseJoinColumns = @JoinColumn(name = "product_id") // FK to Product
-    )
+    @ManyToMany(mappedBy = "productAttributeSet",fetch = FetchType.EAGER)
     private Set<Product> productSet;
     @Column(name = "value")
     private String value;

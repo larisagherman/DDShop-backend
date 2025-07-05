@@ -14,22 +14,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
     @PostMapping
-    ProductDTOResponse createProduct(ProductDTORequest productDTORequest) {
-        return productService.createProduct(productDTORequest);
+    void createProduct(@RequestBody ProductDTORequest productDTORequest) {
+        productService.createProduct(productDTORequest);
     }
+
     @GetMapping
     List<ProductDTOResponse> getAllProducts() {
         return productService.getAllProducts();
     }
+
     @GetMapping("{id}")
     ProductDTOResponse getProductById(@PathVariable Integer id) {
         return productService.getProductById(id);
     }
+
     @PostMapping("{id}")
     ProductDTOResponse updateProduct(@PathVariable Integer id, @RequestBody ProductDTORequest productDTORequest) {
         return productService.updateProduct(id, productDTORequest);
     }
+
     @DeleteMapping("{id}")
     void deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
