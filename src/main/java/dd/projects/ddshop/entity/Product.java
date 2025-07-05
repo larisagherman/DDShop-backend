@@ -31,8 +31,16 @@ public class Product {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category categoryId;
 
-    @ManyToMany(mappedBy = "productSet")
+    @ManyToMany(mappedBy = "productSet",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<ProductAttribute> productAttributeSet;
     @OneToOne(mappedBy = "productId")
     private CartEntry cartEntry;
+    @PreRemove
+    private void removeAssociations() {
+        for (ProductAttribute attribute : productAttributeSet) {
+            attribute.getProductSet().remove(this); // Step 1: remove this product from each attribute's set
+        }
+        productAttributeSet.clear(); // Step 2: clear this product's reference to attributes
+    }
+
 }

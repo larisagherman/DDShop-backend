@@ -14,14 +14,15 @@ public class UserController {
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
-    @GetMapping
-    public List<UserDTOResponse> getAllUsers() {
-        return userService.getAllUsers();
-    }
     @PostMapping
     public UserDTOResponse createUser(@RequestBody UserDTORequest userDTORequest) {
         return userService.createUser(userDTORequest);
     }
+    @GetMapping
+    public List<UserDTOResponse> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     @PutMapping("/{id}")
     public UserDTOResponse updateUser(@PathVariable("id") int id, @RequestBody UserDTORequest userDTORequest) {
         return userService.update(id, userDTORequest);

@@ -17,19 +17,19 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     public AddressDTOResponse createAddress(AddressDTORequest address) {
-        Address newAddress=addressMapper.fromDTORequestToEntity(address);
+        Address newAddress=addressMapper.dtoRequestToEntity(address);
         Address savedAddress=addressRepository.save(newAddress);
-        return addressMapper.fromEntityToDTOResponse(savedAddress);
+        return addressMapper.entityToDTOResponse(savedAddress);
     }
     public List<AddressDTOResponse> getAddresses() {
         List<Address> addresses= addressRepository.findAll();
-        return addresses.stream().map(addressMapper::fromEntityToDTOResponse).collect(Collectors.toList());
+        return addresses.stream().map(addressMapper::entityToDTOResponse).collect(Collectors.toList());
     }
 
     @Override
     public AddressDTOResponse getAddressById(Integer addressId) {
        Address address=addressRepository.findById(addressId).orElse(null);
-       return addressMapper.fromEntityToDTOResponse(address);
+       return addressMapper.entityToDTOResponse(address);
     }
 
     @Override
@@ -41,14 +41,14 @@ public class AddressServiceImpl implements AddressService {
         existingAddress.setPostalCode(addressDTORequest.getPostalCode());
         existingAddress.setCountry(addressDTORequest.getCountry());
         Address savedAddress=addressRepository.save(existingAddress);
-        return addressMapper.fromEntityToDTOResponse(existingAddress);
+        return addressMapper.entityToDTOResponse(existingAddress);
     }
 
     @Override
     public AddressDTOResponse deleteAddress(Integer id) {
         Address address=addressRepository.findById(id).orElse(null);
         addressRepository.delete(address);
-        return addressMapper.fromEntityToDTOResponse(address);
+        return addressMapper.entityToDTOResponse(address);
     }
 
 

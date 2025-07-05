@@ -13,6 +13,8 @@ import java.util.Set;
 @Table(name = "product_attribute")
 public class ProductAttribute {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_attribute_seq")
+    @SequenceGenerator(name = "product_attribute_seq", sequenceName = "product_attribute_seq", allocationSize = 1)
     private int id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;

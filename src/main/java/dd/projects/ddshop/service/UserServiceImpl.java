@@ -22,36 +22,36 @@ public class UserServiceImpl implements UserService {
     private final AddressMapper addressMapper;
 
     public UserDTOResponse createUser(UserDTORequest userDTORequest) {
-        User newUser = userMapper.fromUserDTORequestToUser(userDTORequest);
+        User newUser = userMapper.dtoRequestToEntity(userDTORequest);
         User savedUser = userRepository.save(newUser);
-        return userMapper.fromUserToUserDTOResponse(savedUser);
+        return userMapper.entityToDTOResponse(savedUser);
     }
 
     public List<UserDTOResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(userMapper::fromUserToUserDTOResponse).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(userMapper::entityToDTOResponse).collect(Collectors.toList());
     }
 
     public UserDTOResponse getUserById(Integer id) {
         User foundUser = userRepository.findById(id).orElse(null);
-        return userMapper.fromUserToUserDTOResponse(foundUser);
+        return userMapper.entityToDTOResponse(foundUser);
     }
     public UserDTOResponse update(Integer id, UserDTORequest userDTORequest) {
-        User existingUser = userRepository.findById(id).orElse(null);
+        User existingUser = userRepository.findById(id).orElseThrow(()->new RuntimeException("Product not found"));
         existingUser.setFirstName(userDTORequest.getFirstName());
         existingUser.setLastName(userDTORequest.getLastName());
         existingUser.setEmail(userDTORequest.getEmail());
         existingUser.setPhoneNumber(userDTORequest.getPhoneNumber());
         existingUser.setPassword(userDTORequest.getPassword());
-        existingUser.setDefaultDeliveryAddress(addressMapper.fromDTORequestToEntity(userDTORequest.getDeliveryAddress()));
-        existingUser.setDefaultBillingAddress(addressMapper.fromDTORequestToEntity(userDTORequest.getBillingAddress()));
+        existingUser.setDefaultDeliveryAddress(addressMapper.dtoRequestToEntity(userDTORequest.getDeliveryAddress()));
+        existingUser.setDefaultBillingAddress(addressMapper.dtoRequestToEntity(userDTORequest.getBillingAddress()));
 
         User updatedUser = userRepository.save(existingUser);
 
-        return userMapper.fromUserToUserDTOResponse(updatedUser);
+        return userMapper.entityToDTOResponse(updatedUser);
     }
     public UserDTOResponse delete(Integer id) {
         User user = userRepository.findById(id).orElse(null);
         userRepository.delete(user);
-        return userMapper.fromUserToUserDTOResponse(user);
+        return userMapper.entityToDTOResponse(user);
     }
 }
