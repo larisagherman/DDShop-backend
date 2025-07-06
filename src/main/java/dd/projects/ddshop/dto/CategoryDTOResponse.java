@@ -14,4 +14,5 @@ public class CategoryDTOResponse {
     private int id;
     private String name;
     private String description;
+    private List<ProductDTOResponse> products;
 }

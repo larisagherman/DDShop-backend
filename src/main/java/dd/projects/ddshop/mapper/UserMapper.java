@@ -6,11 +6,6 @@ import dd.projects.ddshop.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-//@Mapper(componentModel = "spring", uses = AddressMapper.class)
-//public interface UserMapper {
-////    List<UserDTOResponse> toUserDTOResponseList(List<User> users);
-//    UserDTOResponse toUserDTOResponse(User user);
-//}
 @Mapper(componentModel = "spring", uses = AddressMapper.class)
 public interface UserMapper {
 

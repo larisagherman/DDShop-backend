@@ -8,12 +8,16 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = ProductMapper.class)
 public interface CategoryMapper {
+    @Mapping(source = "products", target = "products")
     CategoryDTOResponse entityToDtoResponse(Category category);
+    @Mapping(source = "products",target = "products")
+    @Mapping(source = "products.categoryId",target = "products.categoryName")
+    List<CategoryDTOResponse> entityListToDtoResponseList(List<Category> categories);
+    Category dtoRequestToEntity(CategoryDTORequest categoryDTORequest);
 
     Category dtoResponseToEntity(CategoryDTOResponse categoryDTOResponse);
     CategoryDTORequest entityToDtoRequest(Category category);
-    Category dtoRequestToEntity(CategoryDTORequest categoryDTORequest);
-    List<CategoryDTOResponse> entityListToDtoResponseList(List<Category> categories);
+
 }
