@@ -11,6 +11,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//We have this DTO for the product response
+//when we get the product attributes and all the attribute's products (we do not want this)
 public class ProductAttributeDTOResponse2 {
     private String id;
     private String name;

@@ -30,7 +30,7 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     ProductDTOResponse updateProduct(@PathVariable Integer id, @RequestBody ProductDTORequest productDTORequest) {
         return productService.updateProduct(id, productDTORequest);
     }

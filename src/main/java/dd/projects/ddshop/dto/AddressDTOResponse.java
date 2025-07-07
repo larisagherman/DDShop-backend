@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDTOResponse {
+    private int id;
     private int streetLine;
     private int postalCode;
     private String city;

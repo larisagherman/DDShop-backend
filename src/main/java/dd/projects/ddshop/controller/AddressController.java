@@ -26,7 +26,7 @@ public class AddressController {
     public AddressDTOResponse getAddressById(@PathVariable Integer id) {
         return addressService.getAddressById(id);
     }
-    @PostMapping("{id}")
+    @PutMapping("/address/{id}")
     public AddressDTOResponse updateAddress(@PathVariable Integer id,@RequestBody AddressDTORequest addressDTORequest) {
         return addressService.updateAddress(id,addressDTORequest);
     }

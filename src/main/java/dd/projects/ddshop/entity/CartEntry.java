@@ -13,8 +13,10 @@ import java.util.List;
 @Table(name = "cart_entry")
 public class CartEntry {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_entry_seq")
+    @SequenceGenerator(name = "cart_entry_seq", sequenceName = "cart_entry_seq", allocationSize = 1)
     private int id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",nullable = false)
     private Product productId;
     @Column(name = "quantity",nullable = false)
@@ -23,7 +25,7 @@ public class CartEntry {
     private int pricePerPiece;
     @Column(name = "total_price_per_entry",nullable = false)
     private int totalPricePerEntry;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id",nullable = false)
     private Cart cartId;
 

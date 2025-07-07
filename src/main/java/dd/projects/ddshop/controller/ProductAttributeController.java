@@ -26,7 +26,7 @@ public class ProductAttributeController {
     ProductAttributeDTOResponse getProductAttributeById(@RequestParam Integer id) {
         return productAttributeService.getProductAttributeById(id);
     }
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     void updateProductAttribute(@PathVariable Integer id, @RequestBody ProductAttributeDTORequest productAttributeDTORequest) {
         productAttributeService.updateProductAttributeById(id, productAttributeDTORequest);
     }

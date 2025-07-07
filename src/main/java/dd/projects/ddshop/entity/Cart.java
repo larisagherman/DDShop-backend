@@ -14,12 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_seq")
+    @SequenceGenerator(name = "cart_seq", sequenceName = "cart_seq", allocationSize = 1)
     private int id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private User userId;
     @Column(name = "total_price",nullable = false)
     private int totalPrice;
-    @OneToMany(mappedBy = "cartId",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cartId",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartEntry> cartEntries;
 }

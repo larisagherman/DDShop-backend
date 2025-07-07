@@ -24,7 +24,7 @@ public class CategoryController {
     public List<CategoryDTOResponse> getAllCategories(){
         return categoryService.getAllCategories();
     }
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     public CategoryDTOResponse updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDTORequest categoryDTORequest) {
         return categoryService.updateCategory(id, categoryDTORequest);
     }

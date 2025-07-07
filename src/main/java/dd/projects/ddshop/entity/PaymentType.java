@@ -1,5 +1,5 @@
 package dd.projects.ddshop.entity;
 
 public enum PaymentType {
-    CreditCard,CashOnDelivery;
+    credit_card,cash_on_delivery;
 }
