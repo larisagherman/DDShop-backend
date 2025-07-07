@@ -31,10 +31,10 @@ public class OrderService {
     }
 
     public void updateOrder(Integer id, OrderDTORequest orderDTORequest) {
-        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("No order found with id: " + id));
         existingOrder.setOrderDate(orderDTORequest.getOrderDate());
-//        existingOrder.setDeliveryAddress(addressMapper.dtoRequestToEntity(orderDTORequest.getDeliveryAddress()));
-//        existingOrder.setInvoiceAddress(addressMapper.dtoRequestToEntity(orderDTORequest.getInvoiceAddress()));
+        existingOrder.setDeliveryAddress(addressMapper.dtoRequestToEntity(orderDTORequest.getDeliveryAddress()));
+        existingOrder.setInvoiceAddress(addressMapper.dtoRequestToEntity(orderDTORequest.getInvoiceAddress()));
         existingOrder.setPaymentType(orderDTORequest.getPaymentType());
         existingOrder.setTotalPrice(orderDTORequest.getTotalPrice());
         orderRepository.save(existingOrder);

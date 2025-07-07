@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/addresses")
 public class AddressController {
     private final AddressService addressService;
     @PostMapping
@@ -26,7 +26,7 @@ public class AddressController {
     public AddressDTOResponse getAddressById(@PathVariable Integer id) {
         return addressService.getAddressById(id);
     }
-    @PutMapping("/address/{id}")
+    @PutMapping("{id}")
     public AddressDTOResponse updateAddress(@PathVariable Integer id,@RequestBody AddressDTORequest addressDTORequest) {
         return addressService.updateAddress(id,addressDTORequest);
     }
