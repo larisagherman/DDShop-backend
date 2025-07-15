@@ -15,8 +15,8 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping
-    public UserDTOResponse createUser(@RequestBody UserDTORequest userDTORequest) {
-        return userService.createUser(userDTORequest);
+    public void createUser(@RequestBody UserDTORequest userDTORequest) {
+        userService.createUser(userDTORequest);
     }
     @GetMapping
     public List<UserDTOResponse> getAllUsers() {

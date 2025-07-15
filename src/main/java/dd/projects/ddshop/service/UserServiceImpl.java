@@ -21,10 +21,9 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
 
-    public UserDTOResponse createUser(UserDTORequest userDTORequest) {
+    public void createUser(UserDTORequest userDTORequest) {
         User newUser = userMapper.dtoRequestToEntity(userDTORequest);
-        User savedUser = userRepository.save(newUser);
-        return userMapper.entityToDTOResponse(savedUser);
+        userRepository.save(newUser);
     }
 
     public List<UserDTOResponse> getAllUsers() {
