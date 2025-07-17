@@ -32,10 +32,8 @@ public class CartEntryService {
         CartEntry existingCartEntry = cartEntryRepository.findById(id).orElse(null);
         existingCartEntry.setQuantity(cartEntryDTORequest.getQuantity());
         existingCartEntry.setTotalPricePerEntry(cartEntryDTORequest.getTotalPricePerEntry());
-        existingCartEntry.setPricePerPiece(cartEntryDTORequest.getPricePerPiece());
         CartEntry updatedCartEntry = cartEntryRepository.save(existingCartEntry);
     }
-
     @Transactional
     public void deleteCartEntryById(Integer id) {
         CartEntry existingCartEntry = cartEntryRepository.findById(id).orElseThrow(() -> new RuntimeException("Cart Entry Not Found"));

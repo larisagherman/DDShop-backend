@@ -1,6 +1,7 @@
 package dd.projects.ddshop.controller;
 
 import dd.projects.ddshop.dto.CartDTORequest;
+import dd.projects.ddshop.dto.CartDTORequestOnlyWithTotalPrice;
 import dd.projects.ddshop.dto.CartDTOResponse;
 import dd.projects.ddshop.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/carts")
 @RequiredArgsConstructor
+
 public class CartController {
     private final CartService cartService;
 
     @PostMapping
-    public void createCart(CartDTORequest cartDTORequest) {
+    public void createCart(@RequestBody CartDTORequest cartDTORequest) {
+        System.out.println("Received userId: " + cartDTORequest.getUserId());
         cartService.createCart(cartDTORequest);
     }
 
@@ -25,8 +28,12 @@ public class CartController {
     }
 
     @PutMapping("/{id}")
-    public void updateCart(@PathVariable("id") Integer id, CartDTORequest cartDTORequest) {
-        cartService.updateCart(id, cartDTORequest);
+    public void updateCart(@PathVariable("id") Integer id,@RequestBody CartDTORequestOnlyWithTotalPrice cartDtoWithOnlyTotalPrice) {
+        cartService.updateTotalPriceCart(id, cartDtoWithOnlyTotalPrice);
+    }
+    @GetMapping("/user/{userId}")
+    public CartDTOResponse getCartByUserId(@PathVariable("userId") Integer userId) {
+        return cartService.getCartByUserId(userId);
     }
 
     @DeleteMapping("/{id}")

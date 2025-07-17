@@ -1,5 +1,6 @@
 package dd.projects.ddshop.service;
 
+import dd.projects.ddshop.dto.CartDTORequest;
 import dd.projects.ddshop.dto.LoginDTORequest;
 import dd.projects.ddshop.dto.UserDTORequest;
 import dd.projects.ddshop.dto.UserDTOResponse;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,6 +23,7 @@ public class AuthService {
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final CartService cartService;
 
     public ResponseEntity login(LoginDTORequest loginDTORequest) {
         User existingUser = userRepository.findByEmail(loginDTORequest.getEmail());
@@ -51,8 +52,15 @@ public class AuthService {
         if (existingUser != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use.");
         }
-        userService.createUser(userDTORequest);
+//        userService.createUser(userDTORequest);
 
+        User user =userMapper.dtoRequestToEntity(userDTORequest);
+        User savedUser = userRepository.save(user);
+
+        CartDTORequest cartDTORequest = new CartDTORequest();
+        cartDTORequest.setUserId(savedUser.getId());
+        cartDTORequest.setTotalPrice(0);
+        cartService.createCart(cartDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("user created");
     }
 }

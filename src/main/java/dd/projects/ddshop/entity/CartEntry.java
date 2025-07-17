@@ -3,8 +3,6 @@ package dd.projects.ddshop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
@@ -16,9 +14,9 @@ public class CartEntry {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_entry_seq")
     @SequenceGenerator(name = "cart_entry_seq", sequenceName = "cart_entry_seq", allocationSize = 1)
     private int id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",nullable = false)
-    private Product productId;
+    private Product product;
     @Column(name = "quantity",nullable = false)
     private int quantity;
     @Column(name = "price_per_piece",nullable = false)
@@ -27,7 +25,7 @@ public class CartEntry {
     private int totalPricePerEntry;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id",nullable = false)
-    private Cart cartId;
+    private Cart cart;
 
 
 

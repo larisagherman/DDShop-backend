@@ -3,6 +3,7 @@ package dd.projects.ddshop.controller;
 import dd.projects.ddshop.dto.LoginDTORequest;
 import dd.projects.ddshop.dto.UserDTORequest;
 import dd.projects.ddshop.service.AuthService;
+import dd.projects.ddshop.service.CartService;
 import dd.projects.ddshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
+    private final CartService cartService;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTORequest loginDTORequest) {
         return authService.login(loginDTORequest);

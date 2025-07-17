@@ -1,10 +1,10 @@
 package dd.projects.ddshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -39,8 +39,8 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "product_attribute_id")
     )
     private Set<ProductAttribute> productAttributeSet;
-    @OneToOne(mappedBy = "productId")
-    private CartEntry cartEntry;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartEntry> cartEntries = new HashSet<>();
 
     @PreRemove
     private void removeAssociations() {

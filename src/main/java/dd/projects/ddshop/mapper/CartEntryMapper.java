@@ -11,12 +11,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CartEntryMapper {
-    @Mapping(source = "productId", target = "productId.id")
-    @Mapping(source = "cartId", target = "cartId.id")
+    @Mapping(source = "productId", target = "product.id")
+    @Mapping(source = "cartId", target = "cart.id")
     CartEntry dtoRequestToEntity(CartEntryDTORequest cartEntryDTORequest);
 
-    @Mapping(source = "productId.id", target = "productId")
-    @Mapping(source = "cartId.id", target = "cartId")
+    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "cart.id", target = "cartId")
+    @Mapping(source="product.name",target = "productName")
     CartEntryDTOResponse entityToDto(CartEntry entry);
 
     List<CartEntryDTOResponse> entityListToDtoList(List<CartEntry> cartEntries);

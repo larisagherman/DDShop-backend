@@ -2,7 +2,6 @@ package dd.projects.ddshop.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.util.List;
 
@@ -22,6 +21,6 @@ public class Cart {
     private User userId;
     @Column(name = "total_price",nullable = false)
     private int totalPrice;
-    @OneToMany(mappedBy = "cartId",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartEntry> cartEntries;
 }
