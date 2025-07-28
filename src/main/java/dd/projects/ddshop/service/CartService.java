@@ -29,7 +29,7 @@ public class CartService {
         User userId = userRepository.findById(cartDTORequest.getUserId()).orElseThrow(()-> new RuntimeException("User with id " + cartDTORequest.getUserId() + " not found"));
 
         Cart newCart = cartMapper.dtoRequestToEntity(cartDTORequest);
-        newCart.setUserId(userId);
+        newCart.setUser(userId);
         cartRepository.save(newCart);
     }
 
@@ -54,9 +54,21 @@ public class CartService {
         cartRepository.delete(existingCart);
     }
     public CartDTOResponse getCartByUserId(Integer userId) {
-        User foundUser = userRepository.findById(userId).orElse(null);
-        Cart foundCart = cartRepository.findById(foundUser.getCart().getId()).orElse(null);
-        return cartMapper.entityToDto(foundCart);
+        User foundUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Cart activeCart = cartRepository.findActiveCartByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("No active cart found for user"));
+        return cartMapper.entityToDto(activeCart);
+    }
+    public void disableCartById(Integer id) {
+        Cart cart = cartRepository.findById(id).orElse(null);
+        cart.setActive(false);
+        cartRepository.save(cart);
+    }
+    public List<CartDTOResponse> getDisabledCartsByUserId(Integer userId) {
+        User foundUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Cart> disabledCarts = cartRepository.findDisabledCartsByUserId(userId);
+
+        return cartMapper.entityListToDtoList(disabledCarts);
     }
 
 }

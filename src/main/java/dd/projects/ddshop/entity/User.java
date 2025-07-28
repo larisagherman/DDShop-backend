@@ -27,17 +27,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name ="default_delivery_address" , nullable = false)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name ="default_delivery_address" , nullable = true)
     private Address defaultDeliveryAddress;
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name ="default_billing_address" , nullable = false)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name ="default_billing_address" , nullable = true)
     private Address defaultBillingAddress;
 
     @OneToMany(mappedBy = "userId")
     private List<Order> orders;
-    @OneToOne(mappedBy = "userId")
-    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
 
 }

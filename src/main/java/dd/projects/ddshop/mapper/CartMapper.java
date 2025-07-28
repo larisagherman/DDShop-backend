@@ -11,9 +11,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",uses = {CartEntryMapper.class})
 public interface CartMapper {
- @Mapping(source = "userId", target="userId.id")
+ @Mapping(source = "userId", target="user.id")
  Cart dtoRequestToEntity(CartDTORequest cartDTORequest);
- @Mapping(source = "userId.id",target = "userId")
+ @Mapping(source = "user.id",target = "userId")
  @Mapping(source = "cartEntries",target = "cartEntries")
  CartDTOResponse entityToDto(Cart cart);
  

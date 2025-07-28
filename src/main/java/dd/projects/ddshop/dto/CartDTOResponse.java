@@ -17,6 +17,7 @@ public class CartDTOResponse {
     private int id;
     private int userId;
     private int totalPrice;
+    private boolean active;
     private List<CartEntryDTOResponse> cartEntries;
 
 

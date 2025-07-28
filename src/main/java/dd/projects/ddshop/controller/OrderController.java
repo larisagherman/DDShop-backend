@@ -31,8 +31,11 @@ public class OrderController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
         orderService.deleteOrder(id);
-        return new ResponseEntity<>("Product is created successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Order was deleted successfully", HttpStatus.OK);
     }
 
-
+    @GetMapping("/user/{userId}")
+    public List<OrderDTOResponse> getOrdersByUserId(@PathVariable Integer userId) {
+        return orderService.getAllOrdersByUserId(userId);
+    }
 }

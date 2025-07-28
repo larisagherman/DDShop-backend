@@ -17,7 +17,7 @@ public class Address {
     @SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
     private int id;
     @Column(name = "street_line", nullable = false)
-    private int streetLine;
+    private String streetLine;
     @Column(name = "postal_code", nullable = false)
     private int postalCode;
     @Column(nullable = false, length = 50)

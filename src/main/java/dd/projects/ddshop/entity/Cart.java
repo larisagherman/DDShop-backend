@@ -16,11 +16,15 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_seq")
     @SequenceGenerator(name = "cart_seq", sequenceName = "cart_seq", allocationSize = 1)
     private int id;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
-    private User userId;
+    @ManyToOne(fetch = FetchType.LAZY) // Use @ManyToOne if user can have many carts
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @Column(name = "total_price",nullable = false)
     private int totalPrice;
+
+    @Column(name = "active",nullable = false)
+    private boolean active=true;
+
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartEntry> cartEntries;
 }

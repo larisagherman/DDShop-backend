@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/carts")
 @RequiredArgsConstructor
-
 public class CartController {
     private final CartService cartService;
 
@@ -39,6 +38,15 @@ public class CartController {
     @DeleteMapping("/{id}")
     public void deleteCart(@PathVariable("id") Integer id) {
         cartService.deleteCartById(id);
+    }
+
+    @PutMapping("/disabled/{id}")
+    public void disableCart(@PathVariable("id") Integer id) {
+        cartService.disableCartById(id);
+    }
+    @GetMapping("/disabled-carts/user/{userId}")
+    public List<CartDTOResponse> disableAllCarts(@PathVariable("userId") Integer userId){
+        return cartService.getDisabledCartsByUserId(userId);
     }
 
 }

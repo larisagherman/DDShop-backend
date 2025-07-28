@@ -2,12 +2,15 @@ package dd.projects.ddshop.service;
 
 import dd.projects.ddshop.dto.UserDTORequest;
 import dd.projects.ddshop.dto.UserDTOResponse;
+import dd.projects.ddshop.entity.Address;
 import dd.projects.ddshop.entity.User;
 import dd.projects.ddshop.mapper.AddressMapper;
 import dd.projects.ddshop.mapper.UserMapper;
 import dd.projects.ddshop.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,9 +51,18 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.entityToDTOResponse(updatedUser);
     }
+    @Transactional
     public UserDTOResponse delete(Integer id) {
-        User user = userRepository.findById(id).orElse(null);
-        userRepository.delete(user);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));
+        user.setDefaultDeliveryAddress(null);
+        user.setDefaultBillingAddress(null);
+        
+        userRepository.save(user); // this triggers orphanRemoval of Address entities
+
+        userRepository.delete(user); // then delete the User itself
+
         return userMapper.entityToDTOResponse(user);
     }
+
 }

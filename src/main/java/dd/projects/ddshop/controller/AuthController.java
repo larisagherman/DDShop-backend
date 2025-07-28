@@ -1,6 +1,8 @@
 package dd.projects.ddshop.controller;
 
+import dd.projects.ddshop.dto.ForgotPasswordDTORequest;
 import dd.projects.ddshop.dto.LoginDTORequest;
+import dd.projects.ddshop.dto.ResetPasswordDTORequest;
 import dd.projects.ddshop.dto.UserDTORequest;
 import dd.projects.ddshop.service.AuthService;
 import dd.projects.ddshop.service.CartService;
@@ -27,5 +29,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTORequest userDTORequest) {
         return authService.register(userDTORequest);
+    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTORequest request) {
+        return authService.forgotPassword(request.getEmail());
+    }
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTORequest resetPasswordDTORequest) {
+        return authService.resetPassword(resetPasswordDTORequest);
     }
 }

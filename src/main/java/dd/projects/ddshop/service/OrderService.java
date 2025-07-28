@@ -2,10 +2,14 @@ package dd.projects.ddshop.service;
 
 import dd.projects.ddshop.dto.OrderDTORequest;
 import dd.projects.ddshop.dto.OrderDTOResponse;
+import dd.projects.ddshop.entity.Cart;
 import dd.projects.ddshop.entity.Order;
+import dd.projects.ddshop.entity.User;
 import dd.projects.ddshop.mapper.AddressMapper;
 import dd.projects.ddshop.mapper.OrderMapper;
+import dd.projects.ddshop.repository.CartRepository;
 import dd.projects.ddshop.repository.OrderRepository;
+import dd.projects.ddshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +24,39 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final AddressMapper addressMapper;
+    private final EmailService emailService;
+    private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    @Transactional
     public void createOrder(OrderDTORequest orderDTORequest) {
+        User user = userRepository.findById(orderDTORequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Cart cart = cartRepository.findById(orderDTORequest.getCartId())
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        // Create new order with current cart
         Order newOrder = orderMapper.dtoRequestToEntity(orderDTORequest);
+        newOrder.setUserId(user);
+        newOrder.setCartId(cart);
         orderRepository.save(newOrder);
+
+        // Disable the old cart
+        cart.setActive(false);
+        cartRepository.save(cart);
+
+        // Create a new empty cart for user for future shopping
+        Cart newCart = new Cart();
+        newCart.setUser(user);
+        newCart.setTotalPrice(0);
+        newCart.setActive(true);
+        cartRepository.save(newCart);
+
+        // Optionally, return newCart ID to frontend or update user session
+
+        emailService.sendOrderConfirmationEmail(newOrder);
     }
+
 
     public List<OrderDTOResponse> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
@@ -40,9 +73,13 @@ public class OrderService {
         orderRepository.save(existingOrder);
     }
     @Transactional
-
     public void deleteOrder(Integer id) {
         Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         orderRepository.delete(existingOrder);
+    }
+
+    public List<OrderDTOResponse> getAllOrdersByUserId(Integer userId) {
+        List<Order> orders = orderRepository.findAllByUserId_Id(userId);
+        return orderMapper.entityListToDtoResponseList(orders);
     }
 }

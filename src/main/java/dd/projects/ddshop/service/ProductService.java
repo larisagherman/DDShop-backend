@@ -48,7 +48,10 @@ public class ProductService {
 
         newProduct.setCategoryId(categoryID);
         newProduct.setProductAttributeSet(attributes);
-
+// Set product on each image
+        if (newProduct.getProductImageUrls() != null) {
+            newProduct.getProductImageUrls().forEach(image -> image.setProduct(newProduct));
+        }
         Product savedProduct = productRepository.save(newProduct);
         ProductDTOResponse productDTOResponse = productMapper.entityToDTOResponse(savedProduct);
         productDTOResponse.setCategoryName(categoryID.getName());

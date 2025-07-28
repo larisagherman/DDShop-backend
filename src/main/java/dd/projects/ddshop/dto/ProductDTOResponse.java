@@ -1,6 +1,7 @@
 package dd.projects.ddshop.dto;
 
 import dd.projects.ddshop.entity.Category;
+import dd.projects.ddshop.entity.ProductImage;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -24,6 +25,7 @@ public class ProductDTOResponse {
     private int availabilityQuantity;
     private Date addedDate;
     private String categoryName;
+    private List<ProductImageDTOResponse> imageUrls;
     private Set<ProductAttributeDTOResponse2> productAttributes;
 
 }
