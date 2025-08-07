@@ -43,16 +43,10 @@ public class OrderService {
 
         // Disable the old cart
         cart.setActive(false);
+        System.out.println(cart.isActive()+" "+cart.getId());
         cartRepository.save(cart);
 
-        // Create a new empty cart for user for future shopping
-        Cart newCart = new Cart();
-        newCart.setUser(user);
-        newCart.setTotalPrice(0);
-        newCart.setActive(true);
-        cartRepository.save(newCart);
 
-        // Optionally, return newCart ID to frontend or update user session
 
         emailService.sendOrderConfirmationEmail(newOrder);
     }

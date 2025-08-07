@@ -2,6 +2,7 @@ package dd.projects.ddshop.controller;
 
 import dd.projects.ddshop.dto.CategoryDTORequest;
 import dd.projects.ddshop.dto.CategoryDTOResponse;
+import dd.projects.ddshop.dto.CategoryDTOResponse2;
 import dd.projects.ddshop.entity.Category;
 import dd.projects.ddshop.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,15 @@ public class CategoryController {
     public List<CategoryDTOResponse> getAllCategories(){
         return categoryService.getAllCategories();
     }
+    @GetMapping("/only-categories-names")
+    public List<CategoryDTOResponse2> getAllCategoriesBasicDetails(){
+        return categoryService.getAllCategoriesBasicDetails();
+    }
     @PutMapping("{id}")
     public CategoryDTOResponse updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDTORequest categoryDTORequest) {
         return categoryService.updateCategory(id, categoryDTORequest);
     }
+
     @DeleteMapping("{id}")
     public void deleteCategory(@PathVariable("id") Integer id) {
         categoryService.deleteCategoryById(id);

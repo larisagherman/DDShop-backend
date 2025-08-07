@@ -2,6 +2,7 @@ package dd.projects.ddshop.service;
 
 import dd.projects.ddshop.dto.CategoryDTORequest;
 import dd.projects.ddshop.dto.CategoryDTOResponse;
+import dd.projects.ddshop.dto.CategoryDTOResponse2;
 import dd.projects.ddshop.dto.ProductDTOResponse;
 import dd.projects.ddshop.entity.Category;
 import dd.projects.ddshop.mapper.CategoryMapper;
@@ -26,6 +27,10 @@ public class CategoryService {
     public List<CategoryDTOResponse> getAllCategories() {
         List<Category> categoryList = categoryRepository.findAll();
         return categoryMapper.entityListToDtoResponseList(categoryList);
+    }
+    public List<CategoryDTOResponse2> getAllCategoriesBasicDetails() {
+        List<Category> categoryList = categoryRepository.findAll();
+        return categoryMapper.entityListToDtoResponse2List(categoryList);
     }
     public CategoryDTOResponse getCategoryById(Integer id) {
         Category category = categoryRepository.findById(id).orElse(null);

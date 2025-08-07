@@ -12,6 +12,10 @@ import dd.projects.ddshop.repository.CategoryRepository;
 import dd.projects.ddshop.repository.ProductAttributeRepository;
 import dd.projects.ddshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,6 +65,13 @@ public class ProductService {
     public List<ProductDTOResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return productMapper.entityListToDTOList(products);
+    }
+    public Page<ProductDTOResponse> getAllProductsByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Product> productsPage = productRepository.findAll(pageable);
+
+        List <ProductDTOResponse> dtoList=productMapper.entityListToDTOList(productsPage.getContent());
+        return new PageImpl<>(dtoList, pageable, productsPage.getTotalElements());
     }
 
     public ProductDTOResponse getProductById(Integer id) {

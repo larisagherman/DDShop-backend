@@ -5,6 +5,7 @@ import dd.projects.ddshop.dto.ProductDTOResponse;
 import dd.projects.ddshop.entity.Product;
 import dd.projects.ddshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ProductController {
         productService.createProduct(productDTORequest);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<ProductDTOResponse> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -32,6 +33,11 @@ public class ProductController {
     @GetMapping("{id}")
     ProductDTOResponse getProductById(@PathVariable Integer id) {
         return productService.getProductById(id);
+    }
+
+    @GetMapping
+    public Page<ProductDTOResponse> getProductsByPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size) {
+        return productService.getAllProductsByPage(page, size);
     }
 
     @PutMapping("{id}")
