@@ -6,6 +6,9 @@ import dd.projects.ddshop.entity.Product;
 import dd.projects.ddshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +39,15 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductDTOResponse> getProductsByPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size) {
-        return productService.getAllProductsByPage(page, size);
+    public Page<ProductDTOResponse> getProductsByPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int size,
+                                                      @RequestParam(required = false)String category,
+                                                      @RequestParam(required = false)List<String> ingredients,
+                                                      @RequestParam(required = false)List<String> flavours,
+                                                      @RequestParam(defaultValue = "asc") String sortDir,
+                                                      @RequestParam(defaultValue = "price")String sortField) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDir),sortField);
+        return productService.getProductsByCategory(category,ingredients,flavours,pageable);
+
     }
 
     @PutMapping("{id}")

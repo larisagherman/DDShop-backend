@@ -1,7 +1,6 @@
 package dd.projects.ddshop.service;
 
 import dd.projects.ddshop.dto.ProductAttributeDTORequest;
-import dd.projects.ddshop.dto.ProductAttributeDTOResponse;
 import dd.projects.ddshop.dto.ProductDTORequest;
 import dd.projects.ddshop.dto.ProductDTOResponse;
 import dd.projects.ddshop.entity.Category;
@@ -11,18 +10,18 @@ import dd.projects.ddshop.mapper.ProductMapper;
 import dd.projects.ddshop.repository.CategoryRepository;
 import dd.projects.ddshop.repository.ProductAttributeRepository;
 import dd.projects.ddshop.repository.ProductRepository;
+import dd.projects.ddshop.specifications.ProductSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,4 +90,33 @@ public class ProductService {
     public void deleteProduct(Integer id) {
         productRepository.deleteById(id);
     }
+
+    public Page<ProductDTOResponse> getProductsByCategory(
+            String category,
+            List<String> ingredients,
+            List<String> flavours,
+            Pageable pageable
+    ) {
+        Specification<Product> spec = null;
+
+        if (category != null && !category.isEmpty()) {
+            spec = ProductSpecifications.hasCategory(category);
+        }
+
+        if (ingredients != null && !ingredients.isEmpty()) {
+            Specification<Product> ingredientSpec = ProductSpecifications.hasIngredient(ingredients);
+            spec = (spec == null) ? ingredientSpec : spec.and(ingredientSpec);
+        }
+
+        if (flavours != null && !flavours.isEmpty()) {
+            Specification<Product> flavourSpec = ProductSpecifications.hasFlavour(flavours);
+            spec = (spec == null) ? flavourSpec : spec.and(flavourSpec);
+        }
+
+        Page<Product> filteredProductPage = productRepository.findAll(spec, pageable);
+        List<ProductDTOResponse> dtoList = productMapper.entityListToDTOList(filteredProductPage.getContent());
+
+        return new PageImpl<>(dtoList, pageable, filteredProductPage.getTotalElements());
+    }
+
 }
