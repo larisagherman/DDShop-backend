@@ -22,10 +22,15 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        // Decode the base64-encoded secret
-        byte[] decodedKey = Base64.getDecoder().decode(secret);
-        this.key = Keys.hmacShaKeyFor(decodedKey);
+        try {
+            byte[] decodedKey = Base64.getDecoder().decode(secret);
+            this.key = Keys.hmacShaKeyFor(decodedKey);
+            System.out.println("JWT key initialized successfully");
+        } catch (Exception e) {
+            System.err.println("Error initializing JWT key: " + e.getMessage());
+        }
     }
+
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
