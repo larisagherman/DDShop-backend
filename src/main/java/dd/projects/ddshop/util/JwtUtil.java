@@ -3,17 +3,29 @@ package dd.projects.ddshop.util;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${JWT_SECRET}")
+    private String secret;
+
+    private Key key;
     private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
+    @PostConstruct
+    public void init() {
+        // Decode the base64-encoded secret
+        byte[] decodedKey = Base64.getDecoder().decode(secret);
+        this.key = Keys.hmacShaKeyFor(decodedKey);
+    }
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
