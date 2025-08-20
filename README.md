@@ -33,21 +33,7 @@ Here are the main endpoints of the application :
 
 - **Authentication**  
   - `POST /api/auth/login` – Authenticate user and return JWT.  
-  - `POST /api/auth/register` – Register a new user.  
-
-- **Products**  
-  - `GET /api/products` – Get all products.  
-  - `GET /api/products/{id}` – Get product by ID.  
-  - `POST /api/products` – Create a new product *(Admin only)*.  
-  - `PUT /api/products/{id}` – Update a product *(Admin only)*.  
-  - `DELETE /api/products/{id}` – Delete a product *(Admin only)*.  
-
-- **Orders**  
-  - `GET /api/orders` – Get all orders for the logged-in user.  
-  - `POST /api/orders` – Create a new order.  
-
-- **Users**  
-  - `GET /api/users/me` – Get details of the logged-in user.  
+  - `POST /api/auth/register` – Register a new user.   
 ...
 ---
 
