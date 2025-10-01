@@ -19,26 +19,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())       // Disable CSRF if your frontend is separate
+                .csrf(csrf -> csrf.disable())       // Disable CSRF for APIs
+                .cors(cors -> {})                   // Enable CORS using WebMvcConfigurer
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/swagger-ui/**",
-//                                "/v3/api-docs/**",
-//                                "/swagger-resources/**",
-//                                "/webjars/**",
-//                                "/api/**",
-//                                "/products/**").permitAll()  // Allow unauthenticated access to login
-//                        .anyRequest().authenticated()                // Protect all other endpoints
-                                .anyRequest().permitAll() // ⚠️ TEMPORARY: Allow every request without auth
-
+                        .anyRequest().permitAll()       // TEMP: allow all requests for dev
                 );
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Uncomment JWT filter when ready
+        // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
-
