@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Message From Website</title>
+</head>
+<body>
+<h2>📬 New message from your website</h2>
+<p><strong>Name:</strong> <span th:text="${name}"></span></p>
+<p><strong>Email:</strong> <span th:text="${email}"></span></p>
+<p><strong>Subject:</strong> <span th:text="${subject}"></span></p>
+<p><strong>Message:</strong></p>
+<blockquote th:text="${message}"></blockquote>
+</body>
+</html>

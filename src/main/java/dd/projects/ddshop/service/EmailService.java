@@ -1,5 +1,6 @@
 package dd.projects.ddshop.service;
 
+import dd.projects.ddshop.dto.ContactMessageDTO;
 import dd.projects.ddshop.entity.Order;
 import dd.projects.ddshop.entity.User;
 import jakarta.mail.MessagingException;
@@ -60,6 +61,28 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to send reset email");
+        }
+    }
+    public void sendUsAMessage(ContactMessageDTO contactMessageDTO) {
+        Context context = new Context();
+        context.setVariable("name",contactMessageDTO.getFirstname()+" "+contactMessageDTO.getLastname());
+        context.setVariable("email", contactMessageDTO.getEmail());
+        context.setVariable("subject", contactMessageDTO.getSubject());
+        context.setVariable("message", contactMessageDTO.getMessage());
+
+        String html = templateEngine.process("message-us", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        try{
+            MimeMessageHelper helper=new MimeMessageHelper(message,true);
+            helper.setTo("gherman.larisa3@gmail.com");
+            helper.setSubject(contactMessageDTO.getSubject());
+            helper.setText(html, true);
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send message");
         }
     }
 
