@@ -23,6 +23,11 @@ public class ProductImageController {
     @GetMapping("/product/{productId}")
     public ResponseEntity<List<ProductImage> > getProductImage(@PathVariable("productId") Integer productId) {
         List<ProductImage> images = productImageService.getImagesByProductId(productId);
-        return ResponseEntity.ok(images);    }
+        return ResponseEntity.ok(images);
+    }
+    @GetMapping
+    public ResponseEntity<List<String>> getProductImages() {
+        return ResponseEntity.ok(productImageService.getAllProductImages());
+    }
 
 }

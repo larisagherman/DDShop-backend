@@ -7,7 +7,8 @@ import dd.projects.ddshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,15 @@ public class ProductImageService {
         image.setProduct(product);
         productImageRepository.save(image);
     }
+    public List<String> getAllProductImages() {
+        List<ProductImage> productImages = productImageRepository.findAll();
+        Map<Integer,String> imageUrls = new HashMap<>();
+        for(ProductImage productImage : productImages) {
+            imageUrls.put(productImage.getProduct().getId(), productImage.getImageUrl());
+        }
+        return imageUrls.values().stream().collect(Collectors.toList());
+
+    }
 
     public List<ProductImage> getImagesByProductId(Integer productId) {
         return productImageRepository.findByProductId(productId);
@@ -33,5 +43,6 @@ public class ProductImageService {
     public void deleteImage(Integer imageId) {
         productImageRepository.deleteById(imageId);
     }
+
 }
 
