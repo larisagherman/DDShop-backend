@@ -65,7 +65,7 @@ public class EmailService {
     }
     public void sendUsAMessage(ContactMessageDTO contactMessageDTO) {
         Context context = new Context();
-        context.setVariable("name",contactMessageDTO.getFirstname()+" "+contactMessageDTO.getLastname());
+        context.setVariable("name",contactMessageDTO.getFirstName()+" "+contactMessageDTO.getLastName());
         context.setVariable("email", contactMessageDTO.getEmail());
         context.setVariable("subject", contactMessageDTO.getSubject());
         context.setVariable("message", contactMessageDTO.getMessage());

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ContactMessageDTO {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String subject;
     private String message;
