@@ -1,5 +1,6 @@
 package dd.projects.ddshop.controller;
 
+import dd.projects.ddshop.dto.ProductImageDTORequest;
 import dd.projects.ddshop.entity.ProductImage;
 import dd.projects.ddshop.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class ProductImageController {
         return ResponseEntity.ok(images);
     }
     @GetMapping
-    public ResponseEntity<List<String>> getProductImages() {
+    public ResponseEntity<List<ProductImageDTORequest>> getProductImages() {
         return ResponseEntity.ok(productImageService.getAllProductImages());
     }
 

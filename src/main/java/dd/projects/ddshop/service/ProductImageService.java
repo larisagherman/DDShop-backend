@@ -1,5 +1,6 @@
 package dd.projects.ddshop.service;
 
+import dd.projects.ddshop.dto.ProductImageDTORequest;
 import dd.projects.ddshop.entity.Product;
 import dd.projects.ddshop.entity.ProductImage;
 import dd.projects.ddshop.repository.ProductImageRepository;
@@ -26,13 +27,18 @@ public class ProductImageService {
         image.setProduct(product);
         productImageRepository.save(image);
     }
-    public List<String> getAllProductImages() {
+
+    public List<ProductImageDTORequest> getAllProductImages() {
         List<ProductImage> productImages = productImageRepository.findAll();
-        Map<Integer,String> imageUrls = new HashMap<>();
-        for(ProductImage productImage : productImages) {
-            imageUrls.put(productImage.getProduct().getId(), productImage.getImageUrl());
-        }
-        return imageUrls.values().stream().collect(Collectors.toList());
+        List<ProductImageDTORequest> imageUrls = productImageRepository.findAll().stream()
+                .collect(Collectors.groupingBy(pi -> pi.getProduct().getId(),
+                        LinkedHashMap::new,
+                        Collectors.mapping(ProductImage::getImageUrl, Collectors.toList())))
+                .entrySet().stream()
+                .map(entry -> new ProductImageDTORequest(entry.getValue().get(0), entry.getKey()))
+                .collect(Collectors.toList());
+
+        return imageUrls;
 
     }
 
