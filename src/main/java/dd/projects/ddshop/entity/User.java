@@ -27,6 +27,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_admin")
+    private Boolean isAdmin;
+
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name ="default_delivery_address" , nullable = true)
     private Address defaultDeliveryAddress;

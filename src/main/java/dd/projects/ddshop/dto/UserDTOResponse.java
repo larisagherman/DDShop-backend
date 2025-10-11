@@ -15,4 +15,5 @@ public class UserDTOResponse {
     private Long phoneNumber;
     private AddressDTOResponse deliveryAddress;
     private AddressDTOResponse billingAddress;
+    private Boolean isAdmin;
 }
