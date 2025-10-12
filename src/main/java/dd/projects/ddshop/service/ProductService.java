@@ -80,6 +80,7 @@ public class ProductService {
 
     public ProductDTOResponse updateProduct(Integer id, ProductDTORequest product) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setAvailabilityQuantity(product.getAvailabilityQuantity());
