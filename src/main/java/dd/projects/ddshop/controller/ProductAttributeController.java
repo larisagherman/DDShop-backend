@@ -22,8 +22,8 @@ public class ProductAttributeController {
     List<ProductAttributeDTOResponse> getProductAttributes() {
         return productAttributeService.getAllProductAttributes();
     }
-    @GetMapping("{id}")
-    ProductAttributeDTOResponse getProductAttributeById(@RequestParam Integer id) {
+    @GetMapping("/{id}")
+    ProductAttributeDTOResponse getProductAttributeById(@PathVariable Integer id) {
         return productAttributeService.getProductAttributeById(id);
     }
     @PutMapping("{id}")
