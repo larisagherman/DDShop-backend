@@ -22,6 +22,7 @@ public class UserController {
     public void createUser(@RequestBody UserDTORequest userDTORequest) {
         userService.createUser(userDTORequest);
     }
+
     @GetMapping
     public List<UserDTOResponse> getAllUsers() {
         return userService.getAllUsers();

@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
         existingUser.setLastName(userDTORequest.getLastName());
         existingUser.setEmail(userDTORequest.getEmail());
         existingUser.setPhoneNumber(userDTORequest.getPhoneNumber());
-        existingUser.setPassword(userDTORequest.getPassword());
         existingUser.setDefaultDeliveryAddress(addressMapper.dtoRequestToEntity(userDTORequest.getDeliveryAddress()));
         existingUser.setDefaultBillingAddress(addressMapper.dtoRequestToEntity(userDTORequest.getBillingAddress()));
 

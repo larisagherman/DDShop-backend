@@ -38,4 +38,8 @@ public class OrderController {
     public List<OrderDTOResponse> getOrdersByUserId(@PathVariable Integer userId) {
         return orderService.getAllOrdersByUserId(userId);
     }
+    @GetMapping("{id}")
+    public OrderDTOResponse getOrderById(@PathVariable Integer id) {
+        return orderService.getOrderById(id);
+    }
 }

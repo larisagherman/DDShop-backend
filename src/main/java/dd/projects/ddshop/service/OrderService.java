@@ -57,7 +57,7 @@ public class OrderService {
         return orderMapper.entityListToDtoResponseList(orders);
     }
 
-    public void updateOrder(Integer id, OrderDTORequest orderDTORequest) {
+    public void  updateOrder(Integer id, OrderDTORequest orderDTORequest) {
         Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("No order found with id: " + id));
         existingOrder.setOrderDate(orderDTORequest.getOrderDate());
         existingOrder.setDeliveryAddress(addressMapper.dtoRequestToEntity(orderDTORequest.getDeliveryAddress()));
@@ -75,5 +75,9 @@ public class OrderService {
     public List<OrderDTOResponse> getAllOrdersByUserId(Integer userId) {
         List<Order> orders = orderRepository.findAllByUserId_Id(userId);
         return orderMapper.entityListToDtoResponseList(orders);
+    }
+    public OrderDTOResponse getOrderById(Integer id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        return orderMapper.entityToDtoResponse(order);
     }
 }
